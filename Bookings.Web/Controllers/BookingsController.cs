@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Bookings.Web.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using StudentDormWebApp.Models;
 
-namespace StudentDormWebApp.Controllers
+
+namespace Bookings.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

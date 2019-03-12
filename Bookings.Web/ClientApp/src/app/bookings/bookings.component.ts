@@ -6,16 +6,16 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './bookings.component.html'
 })
 export class BookingsComponent {
-  public bookings: Bookings[];
+  public bookings: Booking[];
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    http.get<Bookings[]>(baseUrl + 'api/Bookings/').subscribe(result => {
+    http.get<Booking[]>(baseUrl + 'api/Bookings/Index').subscribe(result => {
       this.bookings = result;
     }, error => console.error(error));
   }
 }
 
-interface Bookings {
+interface Booking {
   room: string;
   startDate: Date;
   endDate: Date;

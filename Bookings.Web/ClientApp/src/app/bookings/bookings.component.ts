@@ -13,9 +13,11 @@ export class BookingsComponent {
       this.bookings = result;
     }, error => console.error(error));
   }
+
+  
 }
 
-interface Booking {
+export class Booking {
   room: string;
   startDate: Date;
   endDate: Date;

@@ -1,0 +1,23 @@
+<h1>Add Booking</h1>
+
+
+
+<p *ngIf="!booking"><em>Loading...</em></p>
+
+<div *ngIf="hero">
+  
+
+  <div>
+    <label>
+      Room:
+      <input [(ngModel)]="booking.room" placeholder="Room" />
+    </label>
+
+    <label>
+      Start Date:
+      <input [(ngModel)]="booking.startDate" placeholder="Start Date" />
+    </label>
+
+  </div>
+
+</div>

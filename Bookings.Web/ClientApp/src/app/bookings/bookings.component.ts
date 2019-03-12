@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './bookings.component.html'
 })
 export class BookingsComponent {
-  public bookings: Booking[];
+  public bookings: Booking[];  
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     http.get<Booking[]>(baseUrl + 'api/Bookings/Index').subscribe(result => {

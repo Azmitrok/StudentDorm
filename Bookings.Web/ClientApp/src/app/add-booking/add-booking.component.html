@@ -4,7 +4,7 @@
 
 <p *ngIf="!booking"><em>Loading...</em></p>
 
-<div *ngIf="hero">
+<div *ngIf="booking">
   
 
   <div>
@@ -19,5 +19,7 @@
     </label>
 
   </div>
+
+  <button (click)="createBooking(booking)" >Add</button>
 
 </div>

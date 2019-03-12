@@ -10,6 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { BookingsComponent } from './bookings/bookings.component';
+import { AddBookingComponent } from './add-booking/add-booking.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { BookingsComponent } from './bookings/bookings.component';
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
-    BookingsComponent
+    BookingsComponent,
+    AddBookingComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -29,6 +31,7 @@ import { BookingsComponent } from './bookings/bookings.component';
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'bookings', component: BookingsComponent },
+      { path: 'add-booking', component: AddBookingComponent },
     ])
   ],
   providers: [],

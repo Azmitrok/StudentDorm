@@ -25,5 +25,19 @@ namespace Bookings.Web.Controllers
                 UsedPlaces = 1
             });
         }
+
+        [HttpPost("[action]")]
+        public IActionResult Add(Booking booking)
+        {
+
+            var s = booking.ToString();
+
+            s += "!";
+
+            return Ok();
+
+        }
     }
+
+
 }

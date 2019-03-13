@@ -8,7 +8,7 @@
   
 
   <div>
-    <label>
+    <!--<label>
       Room:
       <input [(ngModel)]="booking.room" placeholder="Room" />
     </label>
@@ -16,10 +16,15 @@
     <label>
       Start Date:
       <input [(ngModel)]="booking.startDate" placeholder="Start Date" />
+    </label>-->
+
+    <label>
+      Used Places:
+      <input [(ngModel)]="booking.usedPlaces" placeholder="Used Places" />
     </label>
 
   </div>
 
-  <button (click)="createBooking(booking)" >Add</button>
+  <button (click)="addBooking(booking)" >Add</button>
 
 </div>

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Bookings.Web.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace Bookings.Web.Controllers
 {
@@ -15,28 +15,40 @@ namespace Bookings.Web.Controllers
     {
         [HttpGet("[action]")]
         public IEnumerable<Booking> Index()
-        {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new Booking
+        {            
+            using (var context = new BookingsContext())
             {
-                StartDate = DateTime.Now,
-                EndDate = DateTime.Now.AddDays(4),
-                Gender = Gender.Female,
-                UsedPlaces = 1
-            });
+                var list = context.Bookings.Include(b => b.Room).ToList();
+                
+                return list;
+            }
         }
 
-        [HttpPost("[action]")]
+        [HttpPost]
         public IActionResult Add(Booking booking)
         {
-
-            var s = booking.ToString();
-
-            s += "!";
+            using (var context = new BookingsContext())
+            {
+                context.Bookings.Add(booking);
+                context.SaveChanges();
+            }
 
             return Ok();
 
         }
+
+        //[HttpPost]
+        //public IActionResult Add(string name)
+        //{
+
+        //    var s = name;
+            
+
+
+
+        //    return Ok();
+
+        //}
     }
 
 

@@ -1,0 +1,20 @@
+<h1>Free Rooms</h1>
+
+
+
+
+<p *ngIf="!rooms"><em>No rooms</em></p>
+
+<table class='table' *ngIf="rooms">
+  <thead>
+    <tr>
+      <th>Room Number</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let room of rooms">
+      <td>{{ room.number }}</td>      
+    </tr>
+  </tbody>
+</table>

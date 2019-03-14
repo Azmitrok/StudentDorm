@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { NgbModule } from '@angular/';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -11,6 +12,7 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { BookingsComponent } from './bookings/bookings.component';
 import { AddBookingComponent } from './add-booking/add-booking.component';
+import { FreeRoomsComponent } from './free-rooms/free-rooms.component';
 
 @NgModule({
   declarations: [
@@ -20,18 +22,21 @@ import { AddBookingComponent } from './add-booking/add-booking.component';
     CounterComponent,
     FetchDataComponent,
     BookingsComponent,
-    AddBookingComponent
+    AddBookingComponent,
+    FreeRoomsComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    NgbModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'bookings', component: BookingsComponent },
       { path: 'add-booking', component: AddBookingComponent },
+      { path: 'free-rooms', component: FreeRoomsComponent },
     ])
   ],
   providers: [],

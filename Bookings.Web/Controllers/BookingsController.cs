@@ -24,6 +24,19 @@ namespace Bookings.Web.Controllers
             }
         }
 
+        [HttpGet("[action]")]
+        public IEnumerable<Room> FreeRooms(DateTime startDate, DateTime endDate)
+        {
+            using (var context = new BookingsContext())
+            {
+                var busyRooms = context.Bookings.Where(b => b.StartDate < endDate && b.EndDate > startDate).Select(b => b.Room);
+
+                var freeRooms = context.Rooms.Except(busyRooms).ToList();
+
+                return freeRooms;
+            }
+        }
+
         [HttpPost]
         public IActionResult Add(Booking booking)
         {

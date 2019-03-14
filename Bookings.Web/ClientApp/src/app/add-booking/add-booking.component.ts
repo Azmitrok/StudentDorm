@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Observable} from 'rxjs';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { _throw as throwError } from 'rxjs/observable/throw';
 import { catchError, retry, tap } from 'rxjs/operators';
 
@@ -23,13 +24,14 @@ export class AddBookingComponent {
   public allRooms: Room[];
   private httpClient: HttpClient;
   private baseUrl;
+  private router: Router;
 
 
-
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+  constructor(router: Router, http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     this.booking = new Booking();
     this.httpClient = http;
     this.baseUrl = baseUrl;
+    this.router = router;
     http.get<Room[]>(baseUrl + 'api/Bookings/AllRooms').subscribe(result => {
       this.allRooms = result;      
     }, error => console.error(error));
@@ -47,15 +49,23 @@ export class AddBookingComponent {
     
   }
 
-  public addBooking(booking: Booking): Observable<Booking> {
+  public addBooking(booking: Booking)  {
     this.booking.roomid = +this.selectedRoom;
     let url = this.baseUrl + 'api/Bookings/';
-    
-    return this.httpClient.post<Booking>(url, booking, httpOptions)
-      .pipe(
-      tap(_ => this.log('fetched hero id=${id}')),
-      catchError(this.handleError<Booking>('getHero id=${id}'))
-      );
+
+    //this.httpClient.post(url, JSON.stringify({ roomid: booking.roomid }), { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }).subscribe(
+    //  res => {
+    //    const response = res.toString();
+    //  }
+    //);
+
+    this.httpClient.post<Booking>(url, booking, httpOptions).subscribe(
+      response => console.log(response),
+      err => console.log(err)
+    );
+
+    this.router.navigateByUrl('/bookings');
+      
   }
 
   private handleError<T>(operation = 'operation', result?: T) {

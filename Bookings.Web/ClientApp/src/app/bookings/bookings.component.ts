@@ -14,6 +14,7 @@ export class BookingsComponent {
     }, error => console.error(error));
   }
 
+
   
 }
 

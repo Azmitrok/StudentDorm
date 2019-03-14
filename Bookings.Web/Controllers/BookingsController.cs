@@ -29,11 +29,20 @@ namespace Bookings.Web.Controllers
         {
             using (var context = new BookingsContext())
             {
-                var busyRooms = context.Bookings.Where(b => b.StartDate < endDate && b.EndDate > startDate).Select(b => b.Room);
+                var busyRooms = context.Bookings.Where(b => b.StartDate < endDate && b.EndDate > startDate).Select(b => b.Room).Distinct();
 
                 var freeRooms = context.Rooms.Except(busyRooms).ToList();
 
                 return freeRooms;
+            }
+        }
+
+        [HttpGet("[action]")]
+        public IEnumerable<Room> AllRooms()
+        {
+            using (var context = new BookingsContext())
+            {
+                return context.Rooms.ToList();
             }
         }
 

@@ -1,6 +1,12 @@
 <h1>Bookings</h1>
 
-
+<div class="row">
+  <div class="col-lg-3">
+    <a [routerLink]='["/add-booking"]' (click)='collapse()'>
+      Add Booking
+    </a>
+  </div>
+</div>
 
 <p *ngIf="!bookings"><em>Loading...</em></p>
 
@@ -16,9 +22,9 @@
   </thead>
   <tbody>
     <tr *ngFor="let booking of bookings">
-      <td>{{ booking.room }}</td>
-      <td>{{ booking.startDate }}</td>
-      <td>{{ booking.endDate }}</td>
+      <td>{{ booking.room.number }}</td>
+      <td>{{ booking.startDate | date }}</td>
+      <td>{{ booking.endDate | date }}</td>
       <td>{{ booking.usedPlaces }}</td>
       <td>{{ booking.gender }}</td>
 

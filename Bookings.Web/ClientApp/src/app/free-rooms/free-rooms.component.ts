@@ -1,7 +1,6 @@
 import { Component, Inject, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-free-rooms',
@@ -17,10 +16,10 @@ export class FreeRoomsComponent {
     this.baseUrl = baseUrl;
   }
 
-  public getFreeRooms(startDate: Date, endDate: Date) {
+  public findFreeRooms(startDate: string, endDate: string) {
     let params = new HttpParams()
-      .set('startDate', startDate.toDateString())
-      .set('endDate', endDate.toDateString());
+      .set('startDate', startDate)
+      .set('endDate', endDate);
 
     this.httpClient.get<Room[]>(this.baseUrl + 'api/Bookings/FreeRooms', { params: params }).subscribe(result => {
       this.rooms = result;
@@ -30,6 +29,7 @@ export class FreeRoomsComponent {
 }
 
 export class Room {
+  id: number;
   number: number;
   availableSpaces: number;
 }

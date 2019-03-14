@@ -6,25 +6,32 @@
 
 <div *ngIf="booking">
   
+  <form>
+    <div>      
+      <div class="form-group">
 
-  <div>
-    <!--<label>
-      Room:
-      <input [(ngModel)]="booking.room" placeholder="Room" />
-    </label>
+        <label>Room</label>
+        <select [(ngModel)]="selectedRoom" id="roomSelect" name="roomSelectName" class="form-control">
+          <option *ngFor="let room of allRooms" [value]="room.id" >{{room.number}}</option>
+        </select>
 
-    <label>
-      Start Date:
-      <input [(ngModel)]="booking.startDate" placeholder="Start Date" />
-    </label>-->
+      </div>
 
-    <label>
-      Used Places:
-      <input [(ngModel)]="booking.usedPlaces" placeholder="Used Places" />
-    </label>
+      <div class="form-group">
+        <label>Start Date</label>
+        <input type="date" [(ngModel)]="booking.startDate" name="startDate" placeholder="Start Date" class="form-control"/>
+      </div>
+      <div class="form-group">
+        <label>End Date</label>
+        <input type="date" [(ngModel)]="booking.endDate" name="endDate" placeholder="End Date" class="form-control"/>
 
-  </div>
+      </div>
+      <div class="form-group">
+        <label>Used Places</label>
+        <input [(ngModel)]="booking.usedPlaces" name="usedPlaces" placeholder="Used Places" class="form-control"/>
+      </div>
+    </div>
 
-  <button (click)="addBooking(booking)" >Add</button>
-
+    <button (click)="addBooking(booking)" class="btn btn-primary">Add</button>
+  </form>
 </div>

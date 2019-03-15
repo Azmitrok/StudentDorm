@@ -80,9 +80,20 @@ namespace Bookings.Web
 
         private void GenerateTestData()
         {
-            //GenerateRooms();
-            GenerateBookings();
+            GenerateRooms();
+            //GenerateBookings();
 
+        }
+
+        private void GenerateRooms()
+        {
+            using (var context = new BookingsContext())
+            {
+                for (int i = 0; i < 50; i++)
+                    context.Rooms.Add(new Room() { AvailablePlaces = 1, Number = 200 + i });
+
+                context.SaveChanges();
+            }
         }
 
         private void GenerateBookings()
@@ -117,15 +128,6 @@ namespace Bookings.Web
             return rooms[random.Next(rooms.Count - 1)];
         }
 
-        private void GenerateRooms()
-        {
-            using (var context = new BookingsContext())
-            {
-                for (int i = 0; i < 50; i++)
-                    context.Rooms.Add(new Room() { AvailablePlaces = 1, Number = 200 + i });
-
-                context.SaveChanges();
-            }
-        }
+        
     }
 }

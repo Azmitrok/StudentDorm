@@ -21,13 +21,14 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let booking of bookings">
+    <tr *ngFor="let booking of bookings | paginate: { itemsPerPage: 15, currentPage: p }">
       <td>{{ booking.room.number }}</td>
       <td>{{ booking.startDate | date }}</td>
       <td>{{ booking.endDate | date }}</td>
       <td>{{ booking.usedPlaces }}</td>
-      <td>{{ booking.gender }}</td>
+      <td>{{ booking.gender == 0 ? 'M' : 'F' }}</td>
 
     </tr>
   </tbody>
 </table>
+<pagination-controls (pageChange)="p = $event"></pagination-controls>

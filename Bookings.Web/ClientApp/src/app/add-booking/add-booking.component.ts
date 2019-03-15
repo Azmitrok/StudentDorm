@@ -19,12 +19,13 @@ const httpOptions = {
 
 
 export class AddBookingComponent {
-  public booking: Booking;  
+  public booking: Booking;
   public selectedRoom: Room;
   public allRooms: Room[];
   private httpClient: HttpClient;
   private baseUrl;
   private router: Router;
+  private errorMessage: string;
 
 
   constructor(router: Router, http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
@@ -33,39 +34,33 @@ export class AddBookingComponent {
     this.baseUrl = baseUrl;
     this.router = router;
     http.get<Room[]>(baseUrl + 'api/Bookings/AllRooms').subscribe(result => {
-      this.allRooms = result;      
+      this.allRooms = result;
     }, error => console.error(error));
 
-    let s = 1;
-  }
 
-  public createBooking(booking: Booking) {
-    let url = this.baseUrl + 'api/Bookings/';
-    return this.httpClient.post(url, booking);
   }
 
   public setSelectedRoom(room: Room) {
     this.selectedRoom = room;
-    
+
   }
 
-  public addBooking(booking: Booking)  {
+  public addBooking(booking: Booking) {
     this.booking.roomid = +this.selectedRoom;
     let url = this.baseUrl + 'api/Bookings/';
 
-    //this.httpClient.post(url, JSON.stringify({ roomid: booking.roomid }), { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }).subscribe(
-    //  res => {
-    //    const response = res.toString();
-    //  }
-    //);
-
-    this.httpClient.post<Booking>(url, booking, httpOptions).subscribe(
-      response => console.log(response),
-      err => console.log(err)
+    var isAdded = this.httpClient.post<Booking>(url, booking, httpOptions).subscribe(
+      response => {
+        if (response)
+          this.router.navigateByUrl('/bookings');
+        else
+          this.errorMessage = "The room is busy on this period.";
+      },
+      err => console.log(err),
     );
 
-    this.router.navigateByUrl('/bookings');
-      
+
+
   }
 
   private handleError<T>(operation = 'operation', result?: T) {

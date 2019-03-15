@@ -10,7 +10,8 @@ export class BookingsComponent {
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     http.get<Booking[]>(baseUrl + 'api/Bookings/Index').subscribe(result => {
-      this.bookings = result;      
+      
+      this.bookings = result
     }, error => console.error(error));
   }
 
@@ -24,5 +25,11 @@ export class Booking {
   startDate: Date;
   endDate: Date;
   usedPalces: number;
-  gender: string;  
+ // gender: string;
+  gender: Gender;  
+}
+
+export enum Gender {
+  Male = 0,
+  Female
 }

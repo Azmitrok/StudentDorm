@@ -2,6 +2,7 @@ import { Component, Inject, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
+
 @Component({
   selector: 'app-free-rooms',
   templateUrl: './free-rooms.component.html'
@@ -9,11 +10,19 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 export class FreeRoomsComponent {
   public rooms: Room[];
   private httpClient: HttpClient;
-  private baseUrl : string;
+  private baseUrl: string;
+  public startDate: Date;
+  public endDate: Date;
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     this.httpClient = http;
     this.baseUrl = baseUrl;
+    
+    this.startDate = new Date();
+    this.endDate = new Date();
+    this.endDate.setDate(this.endDate.getDate() + 1);
+
+    this.findFreeRooms(this.startDate.toDateString(), this.endDate.toDateString());
   }
 
   public findFreeRooms(startDate: string, endDate: string) {

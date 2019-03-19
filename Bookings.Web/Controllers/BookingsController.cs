@@ -53,7 +53,7 @@ namespace Bookings.Web.Controllers
             using (var context = new BookingsContext())
             {
                 var room = context.Rooms.First(r => r.Id == booking.RoomId);
-                if (IsFreeRoom(context, room, booking.StartDate, booking.EndDate))
+                if (IsFreeRoom(context, room, booking.StartDate, booking.EndDate, booking.Gender))
                 {
 
                     context.Bookings.Add(booking);
@@ -67,17 +67,21 @@ namespace Bookings.Web.Controllers
 
         }
 
-        private bool IsFreeRoom(BookingsContext context, Room room, DateTime startDate, DateTime endDate)
+        private bool IsFreeRoom(BookingsContext context, Room room, DateTime startDate, DateTime endDate, Gender gender)
         {
             var busyRooms = GetBusyRooms(context, startDate, endDate);
-            return context.Rooms.ToList().Except(busyRooms).Any(r => r.Id == room.Id);
+            //return context.Rooms.ToList().Except(busyRooms).Any(r => r.Id == room.Id);
+            return context.Rooms.ToList().Except(busyRooms).Any(r => r.Id == room.Id );
         }
 
         private IQueryable<Room> GetBusyRooms(BookingsContext context, DateTime startDate, DateTime endDate)
         {
-            return context.Bookings.Where(b => b.StartDate < endDate && b.EndDate > startDate).Select(b => b.Room).Distinct();
+            return context.Bookings.Where(b => b.StartDate < endDate && b.EndDate > startDate).GroupBy(b => b.Room).Where(g => g.Count() == g.Key.AvailablePlaces).Select(r => r.Key);
+
+            //return context.Bookings.Where(b => b.StartDate < endDate && b.EndDate > startDate).GroupBy(b => b.Room).Count();// . Select(b => b.Room).Distinct();
         }
         
+
     }
 
 }

@@ -10,6 +10,17 @@
 
 <p *ngIf="!bookings"><em>Loading...</em></p>
 
+<div id="chart" *ngIf="bookings">
+
+  <dx-scheduler [dataSource]="appointments"
+                [views]='["month"]'
+                currentView="month"
+                [currentDate]="currentDate"                
+                [height]="600">
+  </dx-scheduler>
+
+</div>
+
 <table class='table' *ngIf="bookings">
   <thead>
     <tr>

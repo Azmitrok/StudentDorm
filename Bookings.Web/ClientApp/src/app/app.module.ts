@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { DxChartModule, DxDataGridModule, DxSchedulerModule } from 'devextreme-angular';
+import { DxSchedulerModule } from 'devextreme-angular';
 
 
 import { AppComponent } from './app.component';
@@ -32,7 +32,7 @@ import { FreeRoomsComponent } from './free-rooms/free-rooms.component';
     HttpClientModule,
     FormsModule,
     NgxPaginationModule,
-    DxChartModule, DxDataGridModule, DxSchedulerModule,
+    DxSchedulerModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },

@@ -12,11 +12,16 @@
 
 <div id="chart" *ngIf="bookings">
 
-  <dx-scheduler [dataSource]="appointments"
+  <dx-scheduler [dataSource]="bookings"
+                [remoteFiltering]="true"
                 [views]='["month"]'
                 currentView="month"
                 [currentDate]="currentDate"                
-                [height]="600">
+                [height]="600"
+                textExpr="roomid"
+                startDateExpr="startDateObj"
+                endDateExpr="endDateObj"
+                allDayExpr="AllDay">
   </dx-scheduler>
 
 </div>

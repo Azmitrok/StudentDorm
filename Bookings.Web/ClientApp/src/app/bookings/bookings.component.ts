@@ -1,5 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Room } from '../free-rooms/free-rooms.component';
+
 
 @Component({
   selector: 'app-bookings',
@@ -7,18 +9,32 @@ import { HttpClient } from '@angular/common/http';
 })
 export class BookingsComponent {
   public bookings: Booking[];
+  public filteredBookings: Booking[];
   public appointments: Appointment[];
   public currentDate: Date = new Date(2019, 2, 22);
+  public allRooms: Room[];
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+
+    http.get<Room[]>(baseUrl + 'api/Bookings/AllRooms').subscribe(result => {
+      this.allRooms = result;
+    }, error => console.error(error));
+
     http.get<Booking[]>(baseUrl + 'api/Bookings/Index').subscribe(result => {
       
-      this.bookings = this.datesConvert( result );
-      let b = this.bookings;
+      this.bookings = this.datesConvert(result);
+      this.filteredBookings = this.bookings;
+      
     }, error => console.error(error));
 
     this.appointments = this.getAppointments();
     
+  }
+
+  onRoomChange(newRoom) {
+
+    this.filteredBookings = this.bookings.filter(b => b.roomId === +newRoom);
+        
   }
 
   private datesConvert(bookings: Booking[]) {
@@ -61,7 +77,7 @@ export class Appointment {
 
 export class Booking {
   id: number;
-  roomid: number;
+  roomId: number;
   startDate: string;
   endDate: string;
   startDateObj: Date;

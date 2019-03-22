@@ -46,7 +46,7 @@ export class AddBookingComponent {
   }
 
   public addBooking(booking: Booking) {
-    this.booking.roomid = +this.selectedRoom;
+    this.booking.roomId = +this.selectedRoom;
     let url = this.baseUrl + 'api/Bookings/';
 
     var isAdded = this.httpClient.post<Booking>(url, booking, httpOptions).subscribe(

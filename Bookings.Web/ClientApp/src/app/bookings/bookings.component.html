@@ -1,24 +1,29 @@
 <h1>Bookings</h1>
 
+
+
 <div class="row">
   <div class="col-lg-3">
-    <a [routerLink]='["/add-booking"]'>
-      Add Booking
-    </a>
+    <label>Filter by Room</label>
+    <select [(ngModel)]="selectedRoom" id="roomSelect" name="roomSelectName" class="form-control" (ngModelChange)="onRoomChange($event)">
+      <option *ngFor="let room of allRooms" [value]="room.id">{{room.number}}</option>
+    </select>
   </div>
 </div>
 
-<p *ngIf="!bookings"><em>Loading...</em></p>
 
-<div id="chart" *ngIf="bookings">
 
-  <dx-scheduler [dataSource]="bookings"
+<p *ngIf="!filteredBookings"><em>Loading...</em></p>
+
+<div id="chart" *ngIf="filteredBookings">
+
+  <dx-scheduler [dataSource]="filteredBookings"
                 [remoteFiltering]="true"
                 [views]='["month"]'
                 currentView="month"
-                [currentDate]="currentDate"                
+                [currentDate]="currentDate"
                 [height]="600"
-                textExpr="roomid"
+                textExpr="roomId"
                 startDateExpr="startDateObj"
                 endDateExpr="endDateObj"
                 allDayExpr="AllDay">
@@ -26,7 +31,7 @@
 
 </div>
 
-<table class='table' *ngIf="bookings">
+<table class='table' *ngIf="filteredBookings">
   <thead>
     <tr>
       <th>Room</th>
@@ -37,7 +42,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let booking of bookings | paginate: { itemsPerPage: 15, currentPage: p }">
+    <tr *ngFor="let booking of filteredBookings | paginate: { itemsPerPage: 15, currentPage: p }">
       <td>{{ booking.room.number }}</td>
       <td>{{ booking.startDate | date }}</td>
       <td>{{ booking.endDate | date }}</td>
@@ -48,3 +53,11 @@
   </tbody>
 </table>
 <pagination-controls (pageChange)="p = $event"></pagination-controls>
+
+<div class="row">
+  <div class="col-lg-3">
+    <a [routerLink]='["/add-booking"]' class="btn btn-primary">
+      Add Booking
+    </a>
+  </div>
+</div>

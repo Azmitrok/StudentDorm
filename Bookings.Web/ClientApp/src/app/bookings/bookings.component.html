@@ -23,10 +23,16 @@
                 currentView="month"
                 [currentDate]="currentDate"
                 [height]="600"
-                textExpr="roomId"
+                textExpr="scheduleText"
                 startDateExpr="startDateObj"
                 endDateExpr="endDateObj"
-                allDayExpr="AllDay">
+                allDayExpr="AllDay"
+                >
+    <dxi-resource fieldExpr="gender"
+                  [allowMultiple]="false"
+                  [dataSource]="resourcesData"
+                  label="Gender"
+                  [useColorAsDefault]="true"></dxi-resource>
   </dx-scheduler>
 
 </div>

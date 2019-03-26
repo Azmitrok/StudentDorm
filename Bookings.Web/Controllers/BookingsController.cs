@@ -25,11 +25,11 @@ namespace Bookings.Web.Controllers
         }
 
         [HttpGet("[action]")]
-        public IEnumerable<Room> FreeRooms(DateTime startDate, DateTime endDate)
+        public IEnumerable<Room> FreeRooms(DateTime startDate, DateTime endDate, Gender gender, int usedPlaces = 1)
         {
             using (var context = new BookingsContext())
             {
-                var busyRooms = GetBusyRooms(context, startDate, endDate);
+                var busyRooms = GetBusyRooms(context, startDate, endDate, gender, usedPlaces);
 
                 var freeRooms = context.Rooms.Except(busyRooms).ToList();
 
@@ -65,7 +65,7 @@ namespace Bookings.Web.Controllers
             using (var context = new BookingsContext())
             {
                 var room = context.Rooms.First(r => r.Id == booking.RoomId);
-                if (IsFreeRoom(context, room, booking.StartDate, booking.EndDate, booking.Gender))
+                if (IsFreeRoom(context, room, booking.StartDate, booking.EndDate, booking.Gender, booking.UsedPlaces))
                 {
 
                     context.Bookings.Add(booking);
@@ -79,18 +79,26 @@ namespace Bookings.Web.Controllers
 
         }
 
-        private bool IsFreeRoom(BookingsContext context, Room room, DateTime startDate, DateTime endDate, Gender gender)
+        private bool IsFreeRoom(BookingsContext context, Room room, DateTime startDate, DateTime endDate, Gender gender, int usedPlaces)
         {
-            var busyRooms = GetBusyRooms(context, startDate, endDate);
-            //return context.Rooms.ToList().Except(busyRooms).Any(r => r.Id == room.Id);
+            var busyRooms = GetBusyRooms(context, startDate, endDate, gender, usedPlaces);
+
             return context.Rooms.ToList().Except(busyRooms).Any(r => r.Id == room.Id);
         }
 
-        private IQueryable<Room> GetBusyRooms(BookingsContext context, DateTime startDate, DateTime endDate)
+        private IQueryable<Room> GetBusyRooms(BookingsContext context, DateTime startDate, DateTime endDate, Gender gender, int usedPlaces)
         {
-            return context.Bookings.Where(b => b.StartDate < endDate && b.EndDate > startDate).GroupBy(b => b.Room).Where(g => g.Count() == g.Key.AvailablePlaces).Select(r => r.Key);
+            var busyByPlacesRooms = context.Bookings.Where(b => b.StartDate < endDate && b.EndDate > startDate)
+                .GroupBy(b => b.Room)
+                .Where(g => g.Key.AvailablePlaces - g.Sum(b => b.UsedPlaces) < usedPlaces)
+                .Select(r => r.Key);
+
+            var busyByAnotherGenderRooms = context.Bookings.Where(b => b.StartDate < endDate && b.EndDate > startDate && b.Gender != gender)                
+                .Select(b => b.Room).Distinct();
 
             //return context.Bookings.Where(b => b.StartDate < endDate && b.EndDate > startDate).GroupBy(b => b.Room).Count();// . Select(b => b.Room).Distinct();
+
+            return busyByPlacesRooms.Union(busyByAnotherGenderRooms).Distinct();
         }
 
         private int GetMaxUsedPlacesCountByPeriod_Wrong(BookingsContext context, Room room, DateTime startDate, DateTime endDate)
@@ -145,12 +153,12 @@ namespace Bookings.Web.Controllers
         {
             var bookings = context.Bookings.Where(b => b.StartDate < endDate && b.EndDate > startDate && b.RoomId == room.Id);
 
-            var arrivals = bookings.Select(b => new { Date = b.StartDate, Operation = Operation.Plus, b.UsedPlaces});
+            var arrivals = bookings.Select(b => new { Date = b.StartDate, Operation = Operation.Plus, b.UsedPlaces });
             var departures = bookings.Select(b => new { Date = b.EndDate, Operation = Operation.Minus, b.UsedPlaces });
-            
+
             var maxUsedPlaces = 0;
             var counter = 0;
-            foreach(var bookingEvent in arrivals.Union(departures).OrderBy(b => b.Date))
+            foreach (var bookingEvent in arrivals.Union(departures).OrderBy(b => b.Date))
             {
                 counter += bookingEvent.Operation == Operation.Plus ? bookingEvent.UsedPlaces : -1 * bookingEvent.UsedPlaces;
                 maxUsedPlaces = Math.Max(counter, maxUsedPlaces);

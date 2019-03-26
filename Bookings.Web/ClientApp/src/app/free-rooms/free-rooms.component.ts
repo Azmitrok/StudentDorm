@@ -35,7 +35,7 @@ export class FreeRoomsComponent {
     let params = new HttpParams()
       .set('startDate', startDate)
       .set('endDate', endDate)
-      .set('usedPlaces', usedPlaces)
+      .set('usedPlaces', usedPlaces.toString())
       .set('gender', gender.toString());
 
     this.httpClient.get<Room[]>(this.baseUrl + 'api/Bookings/FreeRooms', { params: params }).subscribe(result => {

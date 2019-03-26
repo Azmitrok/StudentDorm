@@ -7,28 +7,34 @@
 <div *ngIf="booking">
   <div *ngIf="errorMessage" class="alert alert-danger">{{errorMessage}}</div>
   <form>
-    <div>      
+    <div>
       <div class="form-group">
 
         <label>Room</label>
         <select [(ngModel)]="selectedRoom" id="roomSelect" name="roomSelectName" class="form-control">
-          <option *ngFor="let room of allRooms" [value]="room.id" >{{room.number}}</option>
+          <option *ngFor="let room of allRooms" [value]="room.id">{{room.number}}</option>
         </select>
 
       </div>
 
       <div class="form-group">
         <label>Start Date</label>
-        <input type="date" [(ngModel)]="booking.startDate" name="startDate" placeholder="Start Date" class="form-control"/>
+        <input type="date" [(ngModel)]="booking.startDate" name="startDate" placeholder="Start Date" class="form-control" />
       </div>
       <div class="form-group">
         <label>End Date</label>
-        <input type="date" [(ngModel)]="booking.endDate" name="endDate" placeholder="End Date" class="form-control"/>
-
+        <input type="date" [(ngModel)]="booking.endDate" name="endDate" placeholder="End Date" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>Gender</label>
+        <select [(ngModel)]="booking.gender" id="genderSelect" name="genderSelectName" class="form-control">
+          <option value="0">Male</option>
+          <option value="1">Female</option>
+        </select>
       </div>
       <div class="form-group">
         <label>Used Places</label>
-        <input [(ngModel)]="booking.usedPlaces" name="usedPlaces" placeholder="Used Places" class="form-control"/>
+        <input [(ngModel)]="booking.usedPlaces" name="usedPlaces" placeholder="Used Places" class="form-control" />
       </div>
     </div>
 

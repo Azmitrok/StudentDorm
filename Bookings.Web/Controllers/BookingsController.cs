@@ -65,7 +65,7 @@ namespace Bookings.Web.Controllers
             using (var context = new BookingsContext())
             {
                 var room = context.Rooms.First(r => r.Id == booking.RoomId);
-                if (IsFreeRoom(context, room, booking.StartDate, booking.EndDate, booking.Gender, booking.UsedPlaces))
+                if (IsFreeRoom(room, booking.StartDate, booking.EndDate, booking.Gender, booking.UsedPlaces))
                 {
 
                     context.Bookings.Add(booking);
@@ -79,11 +79,15 @@ namespace Bookings.Web.Controllers
 
         }
 
-        private bool IsFreeRoom(BookingsContext context, Room room, DateTime startDate, DateTime endDate, Gender gender, int usedPlaces)
+        private bool IsFreeRoom(Room room, DateTime startDate, DateTime endDate, Gender gender, int usedPlaces)
         {
-            var busyRooms = GetBusyRooms(context, startDate, endDate, gender, usedPlaces);
+            using (var context = new BookingsContext())
+            {
 
-            return context.Rooms.ToList().Except(busyRooms).Any(r => r.Id == room.Id);
+                var busyRooms = GetBusyRooms(context, startDate, endDate, gender, usedPlaces);
+
+                return context.Rooms.ToList().Except(busyRooms).Any(r => r.Id == room.Id);
+            }
         }
 
         private IQueryable<Room> GetBusyRooms(BookingsContext context, DateTime startDate, DateTime endDate, Gender gender, int usedPlaces)
